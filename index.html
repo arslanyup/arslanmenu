@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Yup Cafe & Juice Bar · Menu + Ordering + QR</title>
+<title>Yup Cafe & Juice Bar · Order Online</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
@@ -33,7 +33,7 @@ input,textarea,select{font-family:inherit;font-size:1rem;color:inherit}
 /* ============ HEADER ============ */
 .app-header{background:var(--white);border-bottom:1px solid var(--g200);position:sticky;top:0;z-index:100}
 .app-header-inner{max-width:1320px;margin:0 auto;padding:0 22px;display:flex;align-items:center;gap:22px;height:66px}
-.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.2rem;letter-spacing:-.4px;color:var(--dark);flex-shrink:0}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.15rem;letter-spacing:-.4px;color:var(--dark);flex-shrink:0}
 .brand-mark{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,var(--amber),#f59e0b);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.1rem;box-shadow:0 6px 14px -4px rgba(217,119,6,.5)}
 .tabs{display:flex;gap:4px;flex:1;overflow-x:auto;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
@@ -212,9 +212,14 @@ textarea.input{resize:vertical;min-height:70px}
 .qr-actions-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
 .qr-actions-row .btn{flex:1;justify-content:center;min-width:120px}
 
-/* QR direct scan button */
-.direct-scan-btn{background:linear-gradient(135deg,var(--green),#22c55e);color:#fff;padding:12px 20px;border-radius:var(--r-full);font-weight:700;font-size:.88rem;display:inline-flex;align-items:center;gap:9px;box-shadow:0 8px 20px -6px rgba(22,163,74,.5);transition:.15s;margin-top:12px}
-.direct-scan-btn:hover{transform:translateY(-2px);box-shadow:0 12px 24px -6px rgba(22,163,74,.6)}
+/* Direct scan banner */
+.direct-banner{background:linear-gradient(135deg,var(--green),#22c55e);color:#fff;border-radius:var(--r-lg);padding:20px 24px;display:flex;align-items:center;gap:16px;margin-bottom:20px;box-shadow:0 12px 30px -10px rgba(22,163,74,.5)}
+.direct-banner i{font-size:2rem;flex-shrink:0}
+.direct-banner .db-info{flex:1}
+.direct-banner .db-info strong{display:block;font-size:1rem;font-weight:800;margin-bottom:2px}
+.direct-banner .db-info small{font-size:.82rem;opacity:.9}
+.direct-banner .btn{background:#fff;color:var(--green);font-weight:800}
+.direct-banner .btn:hover{background:#f0fdf4}
 
 /* ============ PHONE PREVIEW ============ */
 .preview-stage{display:flex;justify-content:center;padding:20px 0}
@@ -350,6 +355,7 @@ body.customer-mode{background:#fafaf9}
   .phone-screen{height:680px;border-radius:26px}
   .stat-row{grid-template-columns:1fr 1fr}
   .preset-grid{grid-template-columns:1fr 1fr}
+  .direct-banner{flex-direction:column;text-align:center}
 }
 </style>
 </head>
@@ -384,8 +390,18 @@ body.customer-mode{background:#fafaf9}
     <div class="page-head">
       <div>
         <h1>Welcome back 👋</h1>
-        <p>Yup Cafe & Juice Bar · Menu + Ordering + QR · Currency: <strong>Bahraini Dinar (BD)</strong></p>
+        <p>Yup Cafe & Juice Bar · Menu + Ordering + Direct-Scan QR · Currency: <strong>Bahraini Dinar (BD)</strong></p>
       </div>
+    </div>
+
+    <!-- Direct scan banner -->
+    <div class="direct-banner">
+      <i class="fas fa-mobile-screen-button"></i>
+      <div class="db-info">
+        <strong>Direct scan QR code</strong>
+        <small>One scan → your full website opens instantly. Print on table tents & flyers.</small>
+      </div>
+      <button class="btn" onclick="showDirectScanQR()"><i class="fas fa-qrcode"></i> Show QR</button>
     </div>
 
     <div class="stat-row">
@@ -415,14 +431,19 @@ body.customer-mode{background:#fafaf9}
       <div class="card">
         <div class="card-head"><h3><i class="fas fa-bolt"></i> Quick actions</h3></div>
         <div class="quick-list">
+          <div class="quick-item" onclick="showDirectScanQR()">
+            <div class="qi-icon"><i class="fas fa-mobile-screen-button"></i></div>
+            <div class="qi-info"><strong>Direct scan QR</strong><small>Opens your full website on scan</small></div>
+            <i class="fas fa-chevron-right"></i>
+          </div>
           <div class="quick-item" onclick="switchView('qrgen')">
             <div class="qi-icon"><i class="fas fa-qrcode"></i></div>
-            <div class="qi-info"><strong>Create custom QR code</strong><small>Direct scan to your live website</small></div>
+            <div class="qi-info"><strong>Custom QR generator</strong><small>URL, WiFi, phone, text, vCard</small></div>
             <i class="fas fa-chevron-right"></i>
           </div>
           <div class="quick-item" onclick="switchView('payments')">
             <div class="qi-icon"><i class="fas fa-credit-card"></i></div>
-            <div class="qi-info"><strong>Set up payments</strong><small>Connect Stripe or PayPal to get paid</small></div>
+            <div class="qi-info"><strong>Set up payments</strong><small>Connect Stripe or PayPal</small></div>
             <i class="fas fa-chevron-right"></i>
           </div>
           <div class="quick-item" onclick="switchView('editor')">
@@ -435,25 +456,17 @@ body.customer-mode{background:#fafaf9}
             <div class="qi-info"><strong>Test the order flow</strong><small>Add items and pay like a customer</small></div>
             <i class="fas fa-chevron-right"></i>
           </div>
-          <div class="quick-item" onclick="openDirectScanQR()">
-            <div class="qi-icon"><i class="fas fa-mobile-screen-button"></i></div>
-            <div class="qi-info"><strong>Direct scan to website</strong><small>QR that opens your live URL</small></div>
-            <i class="fas fa-chevron-right"></i>
-          </div>
         </div>
       </div>
 
       <div class="card qr-panel">
         <div class="qr-frame"><div id="qrcode"></div></div>
-        <h3>Scan to view & order</h3>
-        <p>Points directly to your website</p>
+        <h3>Scan to open website</h3>
+        <p>Points to your full live site</p>
         <div class="qr-actions" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
           <button class="btn btn-primary btn-sm" onclick="downloadQR()"><i class="fas fa-download"></i> Download</button>
-          <button class="btn btn-ghost btn-sm" onclick="openCustomerView()"><i class="fas fa-eye"></i> Open live</button>
+          <button class="btn btn-ghost btn-sm" onclick="openCustomerView()"><i class="fas fa-eye"></i> Preview menu</button>
         </div>
-        <button class="direct-scan-btn" onclick="showDirectScanQR()">
-          <i class="fas fa-bolt"></i> Direct scan to live website
-        </button>
       </div>
     </div>
   </section>
@@ -573,9 +586,19 @@ body.customer-mode{background:#fafaf9}
   <section class="view" id="view-qrgen">
     <div class="page-head">
       <div>
-        <h1>Custom QR Code Generator</h1>
-        <p>Create QR codes that scan directly to your live website</p>
+        <h1>QR Code Generator</h1>
+        <p>Create QR codes that scan directly to your full live website</p>
       </div>
+    </div>
+
+    <!-- Direct scan banner -->
+    <div class="direct-banner">
+      <i class="fas fa-mobile-screen-button"></i>
+      <div class="db-info">
+        <strong>Direct scan to website</strong>
+        <small id="directUrlDisplay">Loading URL…</small>
+      </div>
+      <button class="btn" onclick="useWebsiteURL()"><i class="fas fa-bolt"></i> Use website URL</button>
     </div>
 
     <div class="qrgen-grid">
@@ -590,10 +613,6 @@ body.customer-mode{background:#fafaf9}
           <textarea class="input" id="qrInput" rows="3" placeholder="https://example.com" oninput="generateCustomQR()"></textarea>
           <div class="hint" id="qrFieldHint">The QR code will open this URL when scanned.</div>
         </div>
-
-        <button type="button" class="btn btn-ghost btn-sm" style="margin-bottom:16px" onclick="useWebsiteURL()">
-          <i class="fas fa-mobile-screen-button"></i> Use my live website URL (direct scan)
-        </button>
 
         <div class="form-row">
           <label>Size <span class="size-value" id="sizeVal">400 px</span></label>
@@ -815,19 +834,22 @@ body.customer-mode{background:#fafaf9}
 
 <!-- Direct scan QR modal -->
 <div class="modal" id="directQRModal">
-  <div class="modal-card" style="max-width:480px">
+  <div class="modal-card" style="max-width:520px">
     <div class="modal-head">
-      <h3>Direct scan to website</h3>
+      <h3><i class="fas fa-mobile-screen-button" style="color:var(--green)"></i> Direct scan to website</h3>
       <button class="btn-icon" onclick="closeModals()"><i class="fas fa-xmark"></i></button>
     </div>
     <div class="modal-body" style="text-align:center">
-      <p style="font-size:.88rem;color:var(--g700);margin-bottom:16px">
-        This QR code opens your live website directly when scanned.
+      <p style="font-size:.88rem;color:var(--g700);margin-bottom:18px">
+        When scanned, this QR opens your <strong>full live website</strong> — menu, ordering, and payments.
       </p>
-      <div style="display:flex;justify-content:center;padding:20px;background:var(--g100);border-radius:16px">
+      <div style="display:flex;justify-content:center;padding:22px;background:var(--g100);border-radius:16px">
         <div id="directQRPreview"></div>
       </div>
-      <div style="margin-top:16px;font-size:.78rem;color:var(--g500);word-break:break-all;font-family:monospace" id="directQRUrl"></div>
+      <div style="margin-top:16px;font-size:.78rem;color:var(--g500);word-break:break-all;font-family:monospace;background:var(--g100);padding:10px 14px;border-radius:10px" id="directQRUrl"></div>
+      <p style="font-size:.76rem;color:var(--g500);margin-top:14px">
+        💡 <strong>Tip:</strong> Right-click the QR → "Save image as…" to download at high resolution.
+      </p>
     </div>
     <div class="modal-foot">
       <button class="btn btn-ghost" onclick="closeModals()">Close</button>
@@ -965,7 +987,7 @@ body.customer-mode{background:#fafaf9}
       </div>
       <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
         <button class="btn btn-outline btn-sm" onclick="downloadQR()"><i class="fas fa-download"></i> Download QR</button>
-        <button class="btn btn-outline btn-sm" onclick="openCustomerView()"><i class="fas fa-eye"></i> Open live menu</button>
+        <button class="btn btn-outline btn-sm" onclick="showDirectScanQR()"><i class="fas fa-mobile-screen-button"></i> Direct scan QR</button>
       </div>
     </div>
   </div>
@@ -977,7 +999,7 @@ body.customer-mode{background:#fafaf9}
 /* ============================================================
    CONSTANTS
    ============================================================ */
-const STORAGE_KEY = 'yup_cafe_v1';
+const STORAGE_KEY = 'yup_cafe_v2';
 const COLORS = ['#d97706','#dc2626','#16a34a','#2563eb','#7c3aed','#db2777','#0891b2','#1c1917'];
 const LOGO_EMOJIS = ['☕','🥤','🧃','🍹','🍵','🍰','🥐','🍩','🥪','🥗','🍽️','🍕','🍔','🍟','🌮','🥙','🇧🇭','🌴'];
 const ITEM_EMOJIS = ['☕','🥤','🧃','🍹','🍵','🧋','🥛','🍺','🍷','🍽️','🍕','🍔','🍟','🌮','🌯','🥙','🥪','🍣','🍜','🍝','🍛','🥘','🍲','🥗','🥩','🍗','🍤','🐟','🥚','🧀','🥖','🍞','🥐','🥞','🧇','🍩','🍰','🎂','🍦','🍫','🍬','🍭','🍮','🍎','🍌','🥑','🍓','🫖','🍯'];
@@ -990,7 +1012,7 @@ const TAGS = [
 ];
 
 const QR_TYPES = [
-  { id:'url',   name:'URL',     icon:'fa-link',        label:'Enter your URL',      hint:'The QR code will open this URL when scanned.', placeholder:'https://example.com' },
+  { id:'url',   name:'Website', icon:'fa-globe',       label:'Your website URL',   hint:'Opens this URL directly when scanned.', placeholder:'https://example.com' },
   { id:'text',  name:'Text',    icon:'fa-align-left',  label:'Enter your text',     hint:'Plain text is shown when scanned.',           placeholder:'Welcome to Yup Cafe!' },
   { id:'phone', name:'Phone',   icon:'fa-phone',       label:'Phone number',        hint:'Scanning will dial this number.',             placeholder:'+973 1700 0000' },
   { id:'email', name:'Email',   icon:'fa-envelope',    label:'Email address',       hint:'Scanning will open a new email.',             placeholder:'hello@yupcafe.bh' },
@@ -1167,15 +1189,14 @@ function toast(msg, type){
 }
 
 /* ============================================================
-   WEBSITE URL (for direct scan)
+   WEBSITE URL — DIRECT SCAN
    ============================================================ */
 function getWebsiteURL(){
-  // Direct link to the live site (not the #menu hash)
-  return location.origin + location.pathname;
-}
-
-function getMenuURL(){
-  return getWebsiteURL() + '#menu';
+  // Full live website URL — QR codes point here for direct scan
+  let url = location.origin + location.pathname;
+  // Remove trailing #menu or any hash for the cleanest possible URL
+  url = url.split('#')[0];
+  return url;
 }
 
 /* ============================================================
@@ -1187,7 +1208,14 @@ function switchView(name){
   document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.view===name));
   if(name==='preview') renderPreview();
   if(name==='payments') renderPayments();
-  if(name==='qrgen'){ renderQRGenControls(); generateCustomQR(); }
+  if(name==='qrgen'){
+    renderQRGenControls();
+    // Auto-load website URL
+    const url = getWebsiteURL();
+    $('directUrlDisplay').textContent = url;
+    if(!qrGen.value){ useWebsiteURL(); }
+    else { generateCustomQR(); }
+  }
   window.scrollTo({top:0,behavior:'smooth'});
 }
 document.querySelectorAll('.tab').forEach(t => {
@@ -1229,11 +1257,8 @@ function renderQR(){
 }
 
 /* ============================================================
-   DIRECT SCAN QR
+   DIRECT SCAN QR MODAL
    ============================================================ */
-function openDirectScanQR(){
-  showDirectScanQR();
-}
 function showDirectScanQR(){
   const url = getWebsiteURL();
   $('directQRUrl').textContent = url;
@@ -1242,7 +1267,7 @@ function showDirectScanQR(){
   try{
     new QRCode(preview, {
       text: url,
-      width: 240, height: 240,
+      width: 260, height: 260,
       colorDark:'#1c1917', colorLight:'#ffffff',
       correctLevel: QRCode.CorrectLevel.H
     });
@@ -1281,7 +1306,7 @@ function downloadDirectQR(){
     document.body.removeChild(temp);
     if(!dataUrl){ toast('Could not generate','err'); return; }
     const a = document.createElement('a');
-    a.download = 'yup-cafe-qr-' + Date.now() + '.png';
+    a.download = 'yup-cafe-direct-qr.png';
     a.href = dataUrl;
     a.click();
     toast('QR downloaded');
@@ -1661,12 +1686,12 @@ function renderQRGenControls(){
     <button type="button" class="qr-type ${qrGen.type===t.id?'active':''}" data-type="${t.id}" onclick="setQRType('${t.id}')">
       <i class="fas ${t.icon}"></i> ${t.name}
     </button>
-  `).join website('');
+  `).join('');
 }
 
 function setQRType(id){
-  q directlyrGen.type = id;
-  when const t = QR_TYPES.find(x=>x.id===id);
+  qrGen.type = id;
+  const t = QR_TYPES.find(x=>x.id===id);
   $('qrFieldLabel').textContent = t.label;
   $('qrFieldHint').textContent = t.hint;
   $('qrInput').placeholder = t.placeholder;
@@ -1690,8 +1715,8 @@ function useWebsiteURL(){
   qrGen.type = 'url';
   document.querySelectorAll('.qr-type').forEach(b => b.classList.toggle('active', b.dataset.type==='url'));
   $('qrInput').value = url;
-  $('qrFieldLabel').textContent = 'Enter your URL';
-  $('qrFieldHint').textContent = 'This QR opens your live scanned.';
+  $('qrFieldLabel').textContent = 'Your website URL';
+  $('qrFieldHint').textContent = 'This QR opens your full live website when scanned.';
   qrGen.value = url;
   generateCustomQR();
   toast('Live website URL loaded');
@@ -1851,7 +1876,7 @@ function shareCustomQR(){
     fetch(url).then(r => r.blob()).then(blob => {
       const file = new File([blob], 'yup-cafe-qr.png', {type:'image/png'});
       if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
-        navigator.share({ files:[file], title:'Yup Cafe QR', text:'Scan to open Yup Cafe menu' }).catch(()=>{});
+        navigator.share({ files:[file], title:'Yup Cafe QR', text:'Scan to open Yup Cafe website' }).catch(()=>{});
       } else {
         navigator.clipboard?.writeText(qrGen.value).then(()=>toast('Content copied'));
       }
@@ -2273,10 +2298,10 @@ function openCustomerView(){
 }
 
 /* ============================================================
-   SHARE / MENU QR
+   SHARE
    ============================================================ */
 function openShareLink(){
-  $('shareLinkInput').value = getMenuURL();
+  $('shareLinkInput').value = getWebsiteURL();
   openModal('shareModal');
 }
 function copyShareLink(){
@@ -2306,7 +2331,7 @@ function downloadQR(){
     ctx.textAlign = 'center';
     ctx.fillText('YUP CAFE & JUICE BAR', size/2, size-24);
     const a = document.createElement('a');
-    a.download = 'yup-cafe-menu-qr.png';
+    a.download = 'yup-cafe-qr.png';
     a.href = out.toDataURL('image/png');
     a.click();
     toast('QR downloaded');
@@ -2376,6 +2401,9 @@ function renderAll(){
   renderQRGenControls();
   updateSizeLabel();
   updateCartCount();
+  // Load website URL into QR generator by default
+  const url = getWebsiteURL();
+  qrGen.value = url;
   if(location.hash === '#menu'){
     setTimeout(openCustomerView, 200);
   }
