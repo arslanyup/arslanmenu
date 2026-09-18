@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gourmet Studio · Menu + Ordering + Payments + QR</title>
+<title>Yup Cafe & Juice Bar · Menu + Ordering + QR</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
@@ -212,6 +212,10 @@ textarea.input{resize:vertical;min-height:70px}
 .qr-actions-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
 .qr-actions-row .btn{flex:1;justify-content:center;min-width:120px}
 
+/* QR direct scan button */
+.direct-scan-btn{background:linear-gradient(135deg,var(--green),#22c55e);color:#fff;padding:12px 20px;border-radius:var(--r-full);font-weight:700;font-size:.88rem;display:inline-flex;align-items:center;gap:9px;box-shadow:0 8px 20px -6px rgba(22,163,74,.5);transition:.15s;margin-top:12px}
+.direct-scan-btn:hover{transform:translateY(-2px);box-shadow:0 12px 24px -6px rgba(22,163,74,.6)}
+
 /* ============ PHONE PREVIEW ============ */
 .preview-stage{display:flex;justify-content:center;padding:20px 0}
 .phone{width:400px;max-width:100%;background:#000;border-radius:44px;padding:11px;box-shadow:0 40px 80px -20px rgba(0,0,0,.35)}
@@ -355,8 +359,8 @@ body.customer-mode{background:#fafaf9}
 <header class="app-header">
   <div class="app-header-inner">
     <div class="brand">
-      <div class="brand-mark"><i class="fas fa-utensils"></i></div>
-      <span>Gourmet Studio</span>
+      <div class="brand-mark"><i class="fas fa-mug-hot"></i></div>
+      <span>Yup Cafe & Juice Bar</span>
     </div>
     <nav class="tabs">
       <button class="tab active" data-view="dashboard"><i class="fas fa-gauge-high"></i> Dashboard</button>
@@ -380,7 +384,7 @@ body.customer-mode{background:#fafaf9}
     <div class="page-head">
       <div>
         <h1>Welcome back 👋</h1>
-        <p>Menu + Ordering + Payments + Custom QR · Currency: <strong>Bahraini Dinar (BD)</strong></p>
+        <p>Yup Cafe & Juice Bar · Menu + Ordering + QR · Currency: <strong>Bahraini Dinar (BD)</strong></p>
       </div>
     </div>
 
@@ -411,14 +415,14 @@ body.customer-mode{background:#fafaf9}
       <div class="card">
         <div class="card-head"><h3><i class="fas fa-bolt"></i> Quick actions</h3></div>
         <div class="quick-list">
+          <div class="quick-item" onclick="switchView('qrgen')">
+            <div class="qi-icon"><i class="fas fa-qrcode"></i></div>
+            <div class="qi-info"><strong>Create custom QR code</strong><small>Direct scan to your live website</small></div>
+            <i class="fas fa-chevron-right"></i>
+          </div>
           <div class="quick-item" onclick="switchView('payments')">
             <div class="qi-icon"><i class="fas fa-credit-card"></i></div>
             <div class="qi-info"><strong>Set up payments</strong><small>Connect Stripe or PayPal to get paid</small></div>
-            <i class="fas fa-chevron-right"></i>
-          </div>
-          <div class="quick-item" onclick="switchView('qrgen')">
-            <div class="qi-icon"><i class="fas fa-qrcode"></i></div>
-            <div class="qi-info"><strong>Create custom QR code</strong><small>For any URL, WiFi, phone, or text</small></div>
             <i class="fas fa-chevron-right"></i>
           </div>
           <div class="quick-item" onclick="switchView('editor')">
@@ -431,9 +435,9 @@ body.customer-mode{background:#fafaf9}
             <div class="qi-info"><strong>Test the order flow</strong><small>Add items and pay like a customer</small></div>
             <i class="fas fa-chevron-right"></i>
           </div>
-          <div class="quick-item" onclick="downloadQR()">
-            <div class="qi-icon"><i class="fas fa-download"></i></div>
-            <div class="qi-info"><strong>Download menu QR</strong><small>High-res PNG for tables</small></div>
+          <div class="quick-item" onclick="openDirectScanQR()">
+            <div class="qi-icon"><i class="fas fa-mobile-screen-button"></i></div>
+            <div class="qi-info"><strong>Direct scan to website</strong><small>QR that opens your live URL</small></div>
             <i class="fas fa-chevron-right"></i>
           </div>
         </div>
@@ -442,11 +446,14 @@ body.customer-mode{background:#fafaf9}
       <div class="card qr-panel">
         <div class="qr-frame"><div id="qrcode"></div></div>
         <h3>Scan to view & order</h3>
-        <p>Guests scan → browse → add to cart → pay</p>
+        <p>Points directly to your website</p>
         <div class="qr-actions" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
           <button class="btn btn-primary btn-sm" onclick="downloadQR()"><i class="fas fa-download"></i> Download</button>
           <button class="btn btn-ghost btn-sm" onclick="openCustomerView()"><i class="fas fa-eye"></i> Open live</button>
         </div>
+        <button class="direct-scan-btn" onclick="showDirectScanQR()">
+          <i class="fas fa-bolt"></i> Direct scan to live website
+        </button>
       </div>
     </div>
   </section>
@@ -471,7 +478,7 @@ body.customer-mode{background:#fafaf9}
       </aside>
 
       <div class="items-area">
-        <div class="items-head"><h2 id="itemsTitle"><span>🍽️</span> All items</h2></div>
+        <div class="items-head"><h2 id="itemsTitle"><span>🥤</span> All items</h2></div>
         <div class="item-grid" id="itemGrid"></div>
       </div>
     </div>
@@ -567,7 +574,7 @@ body.customer-mode{background:#fafaf9}
     <div class="page-head">
       <div>
         <h1>Custom QR Code Generator</h1>
-        <p>Create QR codes for URLs, WiFi, phone numbers, text, and more</p>
+        <p>Create QR codes that scan directly to your live website</p>
       </div>
     </div>
 
@@ -583,6 +590,10 @@ body.customer-mode{background:#fafaf9}
           <textarea class="input" id="qrInput" rows="3" placeholder="https://example.com" oninput="generateCustomQR()"></textarea>
           <div class="hint" id="qrFieldHint">The QR code will open this URL when scanned.</div>
         </div>
+
+        <button type="button" class="btn btn-ghost btn-sm" style="margin-bottom:16px" onclick="useWebsiteURL()">
+          <i class="fas fa-mobile-screen-button"></i> Use my live website URL (direct scan)
+        </button>
 
         <div class="form-row">
           <label>Size <span class="size-value" id="sizeVal">400 px</span></label>
@@ -802,6 +813,29 @@ body.customer-mode{background:#fafaf9}
 <!-- ===================== MODALS ===================== -->
 <div class="overlay" id="overlay"></div>
 
+<!-- Direct scan QR modal -->
+<div class="modal" id="directQRModal">
+  <div class="modal-card" style="max-width:480px">
+    <div class="modal-head">
+      <h3>Direct scan to website</h3>
+      <button class="btn-icon" onclick="closeModals()"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="modal-body" style="text-align:center">
+      <p style="font-size:.88rem;color:var(--g700);margin-bottom:16px">
+        This QR code opens your live website directly when scanned.
+      </p>
+      <div style="display:flex;justify-content:center;padding:20px;background:var(--g100);border-radius:16px">
+        <div id="directQRPreview"></div>
+      </div>
+      <div style="margin-top:16px;font-size:.78rem;color:var(--g500);word-break:break-all;font-family:monospace" id="directQRUrl"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModals()">Close</button>
+      <button class="btn btn-amber" onclick="downloadDirectQR()"><i class="fas fa-download"></i> Download PNG</button>
+    </div>
+  </div>
+</div>
+
 <!-- Item modal -->
 <div class="modal" id="itemModal">
   <div class="modal-card">
@@ -812,15 +846,15 @@ body.customer-mode{background:#fafaf9}
     <div class="modal-body">
       <div class="form-row">
         <label>Item name</label>
-        <input class="input" id="iName" placeholder="e.g. Grilled Hammour">
+        <input class="input" id="iName" placeholder="e.g. Fresh Orange Juice">
       </div>
       <div class="form-row">
         <label>Description</label>
-        <textarea class="input" id="iDesc" placeholder="Local Bahraini hammour fillet, lemon butter"></textarea>
+        <textarea class="input" id="iDesc" placeholder="Freshly squeezed, no sugar added"></textarea>
       </div>
       <div class="form-row">
         <label>Base price (BD)</label>
-        <input class="input" id="iPrice" type="number" step="0.001" min="0" placeholder="5.900">
+        <input class="input" id="iPrice" type="number" step="0.001" min="0" placeholder="1.500">
         <div class="hint">3 decimals · 1 BD = 1000 fils</div>
       </div>
       <div class="form-row">
@@ -870,7 +904,7 @@ body.customer-mode{background:#fafaf9}
     <div class="modal-body">
       <div class="form-row">
         <label>Category name</label>
-        <input class="input" id="cName" placeholder="e.g. Starters">
+        <input class="input" id="cName" placeholder="e.g. Smoothies">
       </div>
       <div class="form-row" style="margin-bottom:0">
         <label>Category emoji</label>
@@ -943,10 +977,10 @@ body.customer-mode{background:#fafaf9}
 /* ============================================================
    CONSTANTS
    ============================================================ */
-const STORAGE_KEY = 'gourmet_studio_qr_v1';
+const STORAGE_KEY = 'yup_cafe_v1';
 const COLORS = ['#d97706','#dc2626','#16a34a','#2563eb','#7c3aed','#db2777','#0891b2','#1c1917'];
-const LOGO_EMOJIS = ['🍽️','🍕','🍔','🍣','🥗','🍜','🌮','🥘','🍰','☕','🍷','🥩','🍤','🥙','🍱','🧆','🇧🇭','🕌'];
-const ITEM_EMOJIS = ['🍽️','🍕','🍔','🍟','🌮','🌯','🥙','🍣','🍜','🍝','🍛','🥘','🍲','🥗','🥩','🍗','🍤','🐟','🥚','🧀','🥖','🍞','🥐','🥞','🧇','🍩','🍰','🎂','🍦','🍫','🍬','🍭','🍮','☕','🍵','🧋','🥤','🍺','🍷','🍹','🥛','🧃','🍎','🍌','🥑','🍓','🫖','🍯'];
+const LOGO_EMOJIS = ['☕','🥤','🧃','🍹','🍵','🍰','🥐','🍩','🥪','🥗','🍽️','🍕','🍔','🍟','🌮','🥙','🇧🇭','🌴'];
+const ITEM_EMOJIS = ['☕','🥤','🧃','🍹','🍵','🧋','🥛','🍺','🍷','🍽️','🍕','🍔','🍟','🌮','🌯','🥙','🥪','🍣','🍜','🍝','🍛','🥘','🍲','🥗','🥩','🍗','🍤','🐟','🥚','🧀','🥖','🍞','🥐','🥞','🧇','🍩','🍰','🎂','🍦','🍫','🍬','🍭','🍮','🍎','🍌','🥑','🍓','🫖','🍯'];
 const TAGS = [
   { id:'veg', label:'Veg', cls:'veg' },
   { id:'spicy', label:'Spicy', cls:'spicy' },
@@ -957,23 +991,23 @@ const TAGS = [
 
 const QR_TYPES = [
   { id:'url',   name:'URL',     icon:'fa-link',        label:'Enter your URL',      hint:'The QR code will open this URL when scanned.', placeholder:'https://example.com' },
-  { id:'text',  name:'Text',    icon:'fa-align-left',  label:'Enter your text',     hint:'Plain text is shown when scanned.',           placeholder:'Hello from Bahrain!' },
+  { id:'text',  name:'Text',    icon:'fa-align-left',  label:'Enter your text',     hint:'Plain text is shown when scanned.',           placeholder:'Welcome to Yup Cafe!' },
   { id:'phone', name:'Phone',   icon:'fa-phone',       label:'Phone number',        hint:'Scanning will dial this number.',             placeholder:'+973 1700 0000' },
-  { id:'email', name:'Email',   icon:'fa-envelope',    label:'Email address',       hint:'Scanning will open a new email.',             placeholder:'hello@example.bh' },
-  { id:'wifi',  name:'WiFi',    icon:'fa-wifi',        label:'WiFi network',        hint:'Format: WIFI:T:WPA;S:NetworkName;P:Password;;', placeholder:'WIFI:T:WPA;S:MyNetwork;P:MyPassword;;' },
+  { id:'email', name:'Email',   icon:'fa-envelope',    label:'Email address',       hint:'Scanning will open a new email.',             placeholder:'hello@yupcafe.bh' },
+  { id:'wifi',  name:'WiFi',    icon:'fa-wifi',        label:'WiFi network',        hint:'Format: WIFI:T:WPA;S:NetworkName;P:Password;;', placeholder:'WIFI:T:WPA;S:YupCafe;P:Welcome123;;' },
   { id:'sms',   name:'SMS',     icon:'fa-comment-sms', label:'SMS number',          hint:'Scanning will open the SMS app.',             placeholder:'+973 1700 0000' },
-  { id:'vcard', name:'Contact', icon:'fa-address-card',label:'Contact info (vCard)',hint:'Format: BEGIN:VCARD...END:VCARD', placeholder:'BEGIN:VCARD\nVERSION:3.0\nFN:Ahmed Ali\nTEL:+97317000000\nEND:VCARD' }
+  { id:'vcard', name:'Contact', icon:'fa-address-card',label:'Contact info (vCard)',hint:'Format: BEGIN:VCARD...END:VCARD', placeholder:'BEGIN:VCARD\nVERSION:3.0\nFN:Yup Cafe\nTEL:+97317000000\nEND:VCARD' }
 ];
 
 /* ============================================================
-   DEFAULT DATA
+   DEFAULT DATA — Yup Cafe & Juice Bar
    ============================================================ */
 function defaultData(){
   return {
     restaurant:{
-      name:'The Golden Fork',
-      tagline:'Modern Bahraini Kitchen · Manama',
-      logo:'🍽️',
+      name:'Yup Cafe & Juice Bar',
+      tagline:'Fresh Juices · Specialty Coffee · Light Bites',
+      logo:'🥤',
       phone:'+973 1700 0000',
       address:'Manama, Kingdom of Bahrain',
       footer:'All prices are in Bahraini Dinar (BD) and include VAT.',
@@ -994,30 +1028,50 @@ function defaultData(){
     },
     categories:[
       {
-        id:'c1', name:'Starters', emoji:'🥗',
+        id:'c1', name:'Fresh Juices', emoji:'🧃',
         items:[
-          { id:'i1', name:'Hummus Beiruti', desc:'Creamy chickpea dip, tahini, olive oil, warm Arabic bread', price:1.500, emoji:'🥙', tags:['veg'], available:true, photo:null, attachments:[], portions:[] },
-          { id:'i2', name:'Calamari Fritti', desc:'Lightly battered squid, lemon aioli, fresh parsley', price:2.900, emoji:'🍤', tags:['popular'], available:true, photo:null, attachments:[], portions:[] }
-        ]
-      },
-      {
-        id:'c2', name:'Mains', emoji:'🥩',
-        items:[
-          { id:'i4', name:'Grilled Hammour', desc:'Local Bahraini hammour fillet, lemon butter, seasonal vegetables', price:5.900, emoji:'🐟', tags:['chef'], available:true, photo:null, attachments:[], portions:[
-            { id:'p1', label:'Regular', price:5.900 },
-            { id:'p2', label:'Large', price:8.500 }
+          { id:'i1', name:'Fresh Orange Juice', desc:'Squeezed to order, 100% natural, no added sugar', price:1.200, emoji:'🍊', tags:['veg','popular'], available:true, photo:null, attachments:[], portions:[
+            { id:'p1', label:'Regular', price:1.200 },
+            { id:'p2', label:'Large', price:1.800 }
           ]},
-          { id:'i5', name:'Ribeye Steak', desc:'250g dry-aged ribeye, truffle fries, peppercorn sauce', price:8.500, emoji:'🥩', tags:['popular'], available:true, photo:null, attachments:[], portions:[
-            { id:'p4', label:'250g', price:8.500 },
-            { id:'p5', label:'400g', price:12.900 }
-          ]}
+          { id:'i2', name:'Watermelon Juice', desc:'Fresh cold-pressed watermelon, refreshing', price:1.300, emoji:'🍉', tags:['veg'], available:true, photo:null, attachments:[], portions:[] },
+          { id:'i3', name:'Mango Lassi', desc:'Creamy mango, yogurt, cardamom', price:1.800, emoji:'🥭', tags:['veg','new'], available:true, photo:null, attachments:[], portions:[] }
         ]
       },
       {
-        id:'c3', name:'Drinks', emoji:'🍷',
+        id:'c2', name:'Smoothies', emoji:'🥤',
         items:[
-          { id:'i12', name:'Fresh Orange Juice', desc:'Squeezed to order, 300ml', price:1.200, emoji:'🧃', tags:['veg'], available:true, photo:null, attachments:[], portions:[] },
-          { id:'i13', name:'Arabic Coffee (Gahwa)', desc:'Traditional with cardamom, served with dates', price:1.000, emoji:'☕', tags:[], available:true, photo:null, attachments:[], portions:[] }
+          { id:'i4', name:'Berry Blast Smoothie', desc:'Strawberry, blueberry, banana, almond milk', price:2.200, emoji:'🍓', tags:['veg','popular'], available:true, photo:null, attachments:[], portions:[
+            { id:'p3', label:'Regular', price:2.200 },
+            { id:'p5', label:'Large', price:3.000 }
+          ]},
+          { id:'i6', name:'Green Detox', desc:'Spinach, apple, celery, ginger, lime', price:2.500, emoji:'🥬', tags:['veg','chef'], available:true, photo:null, attachments:[], portions:[] }
+        ]
+      },
+      {
+        id:'c3', name:'Coffee & Tea', emoji:'☕',
+        items:[
+          { id:'i7', name:'Arabic Coffee (Gahwa)', desc:'Traditional cardamom coffee, served with dates', price:1.000, emoji:'☕', tags:['popular'], available:true, photo:null, attachments:[], portions:[] },
+          { id:'i8', name:'Cappuccino', desc:'Espresso with steamed milk and foam', price:1.500, emoji:'☕', tags:[], available:true, photo:null, attachments:[], portions:[
+            { id:'p7', label:'Small', price:1.500 },
+            { id:'p8', label:'Large', price:2.000 }
+          ]},
+          { id:'i9', name:'Moroccan Mint Tea', desc:'Fresh mint leaves, green tea, honey', price:1.200, emoji:'🍵', tags:['veg'], available:true, photo:null, attachments:[], portions:[] }
+        ]
+      },
+      {
+        id:'c4', name:'Light Bites', emoji:'🥗',
+        items:[
+          { id:'i10', name:'Avocado Toast', desc:'Sourdough, smashed avocado, poached egg, chili flakes', price:3.500, emoji:'🥑', tags:['veg','popular'], available:true, photo:null, attachments:[], portions:[] },
+          { id:'i11', name:'Chicken Caesar Wrap', desc:'Grilled chicken, romaine, parmesan, caesar dressing', price:4.200, emoji:'🌯', tags:[], available:true, photo:null, attachments:[], portions:[] },
+          { id:'i12', name:'Halloumi Salad', desc:'Grilled halloumi, mixed greens, pomegranate, mint', price:4.500, emoji:'🥗', tags:['veg'], available:true, photo:null, attachments:[], portions:[] }
+        ]
+      },
+      {
+        id:'c5', name:'Desserts', emoji:'🍰',
+        items:[
+          { id:'i13', name:'Chocolate Fondant', desc:'Warm chocolate cake, molten centre, vanilla ice cream', price:2.800, emoji:'🍫', tags:['popular'], available:true, photo:null, attachments:[], portions:[] },
+          { id:'i14', name:'Cheesecake Slice', desc:'New York style with berry coulis', price:2.500, emoji:'🍰', tags:[], available:true, photo:null, attachments:[], portions:[] }
         ]
       }
     ]
@@ -1030,7 +1084,7 @@ function defaultData(){
 let data = load();
 let activeCat = 'all';
 let editingItemId = null;
-let selectedEmoji = '🍽️';
+let selectedEmoji = '🥤';
 let selectedItemEmoji = '🍽️';
 let selectedItemTags = [];
 let itemPhotoData = null;
@@ -1043,7 +1097,7 @@ let selectedPayMethod = 'cash';
 /* QR generator state */
 let qrGen = {
   type:'url',
-  value:'https://example.com',
+  value:'',
   size:400,
   dark:'#1c1917',
   light:'#ffffff',
@@ -1113,6 +1167,18 @@ function toast(msg, type){
 }
 
 /* ============================================================
+   WEBSITE URL (for direct scan)
+   ============================================================ */
+function getWebsiteURL(){
+  // Direct link to the live site (not the #menu hash)
+  return location.origin + location.pathname;
+}
+
+function getMenuURL(){
+  return getWebsiteURL() + '#menu';
+}
+
+/* ============================================================
    VIEW SWITCHING
    ============================================================ */
 function switchView(name){
@@ -1154,12 +1220,72 @@ function renderQR(){
   el.innerHTML = '';
   try{
     new QRCode(el, {
-      text: buildMenuURL(),
+      text: getWebsiteURL(),
       width: 190, height: 190,
       colorDark:'#1c1917', colorLight:'#ffffff',
       correctLevel: QRCode.CorrectLevel.L
     });
   }catch(e){}
+}
+
+/* ============================================================
+   DIRECT SCAN QR
+   ============================================================ */
+function openDirectScanQR(){
+  showDirectScanQR();
+}
+function showDirectScanQR(){
+  const url = getWebsiteURL();
+  $('directQRUrl').textContent = url;
+  const preview = $('directQRPreview');
+  preview.innerHTML = '';
+  try{
+    new QRCode(preview, {
+      text: url,
+      width: 240, height: 240,
+      colorDark:'#1c1917', colorLight:'#ffffff',
+      correctLevel: QRCode.CorrectLevel.H
+    });
+  }catch(e){
+    preview.innerHTML = '<div style="padding:20px;color:#dc2626">Could not generate QR</div>';
+  }
+  openModal('directQRModal');
+}
+function downloadDirectQR(){
+  const url = getWebsiteURL();
+  const temp = document.createElement('div');
+  temp.style.position = 'absolute';
+  temp.style.left = '-99999px';
+  document.body.appendChild(temp);
+  try{
+    new QRCode(temp, {
+      text: url,
+      width: 1000, height: 1000,
+      colorDark:'#1c1917', colorLight:'#ffffff',
+      correctLevel: QRCode.CorrectLevel.H
+    });
+  }catch(e){ document.body.removeChild(temp); toast('Could not generate','err'); return; }
+  setTimeout(() => {
+    const canvas = temp.querySelector('canvas');
+    const img = temp.querySelector('img');
+    let dataUrl = null;
+    if(canvas) dataUrl = canvas.toDataURL('image/png');
+    else if(img){
+      const c = document.createElement('canvas');
+      c.width = 1000; c.height = 1000;
+      const ctx = c.getContext('2d');
+      ctx.fillStyle = '#fff'; ctx.fillRect(0,0,1000,1000);
+      ctx.drawImage(img, 0, 0, 1000, 1000);
+      dataUrl = c.toDataURL('image/png');
+    }
+    document.body.removeChild(temp);
+    if(!dataUrl){ toast('Could not generate','err'); return; }
+    const a = document.createElement('a');
+    a.download = 'yup-cafe-qr-' + Date.now() + '.png';
+    a.href = dataUrl;
+    a.click();
+    toast('QR downloaded');
+  }, 150);
 }
 
 /* ============================================================
@@ -1191,7 +1317,7 @@ function renderEditor(){
   let items = [];
   if(activeCat==='all'){
     data.categories.forEach(c => c.items.forEach(i => items.push({...i, catName:c.name})));
-    title.innerHTML = `<span>🍽️</span> All items`;
+    title.innerHTML = `<span>🥤</span> All items`;
   } else {
     const cat = data.categories.find(c=>c.id===activeCat);
     if(cat){
@@ -1271,7 +1397,7 @@ function openItemModal(id){
     $('iName').value = '';
     $('iDesc').value = '';
     $('iPrice').value = '';
-    selectedItemEmoji = '🍽️';
+    selectedItemEmoji = '🥤';
     selectedItemTags = [];
     $('iAvailable').checked = true;
   }
@@ -1469,7 +1595,7 @@ function deleteItem(id){
    CATEGORY CRUD
    ============================================================ */
 function openCategoryModal(){
-  selectedEmoji = '🍽️';
+  selectedEmoji = '🥤';
   $('cName').value = '';
   const picker = $('catEmojiPicker');
   picker.innerHTML = LOGO_EMOJIS.map(e => `<div class="emoji-opt" data-emoji="${e}" onclick="pickCatEmoji('${e}')">${e}</div>`).join('');
@@ -1516,17 +1642,14 @@ function renderPayments(){
 function togglePayment(provider, enabled){
   if(!data.payments) data.payments = {};
   data.payments[provider + 'Enabled'] = enabled;
-  save();
-  renderPayments();
-  renderDashboard();
+  save(); renderPayments(); renderDashboard();
   const names = { stripe:'Stripe', paypal:'PayPal', cash:'Cash on delivery' };
   toast(`${names[provider]} ${enabled?'enabled':'disabled'}`);
 }
 function updatePayment(key, value){
   if(!data.payments) data.payments = {};
   data.payments[key] = value;
-  save();
-  renderDashboard();
+  save(); renderDashboard();
 }
 
 /* ============================================================
@@ -1538,28 +1661,40 @@ function renderQRGenControls(){
     <button type="button" class="qr-type ${qrGen.type===t.id?'active':''}" data-type="${t.id}" onclick="setQRType('${t.id}')">
       <i class="fas ${t.icon}"></i> ${t.name}
     </button>
-  `).join('');
+  `).join website('');
 }
 
 function setQRType(id){
-  qrGen.type = id;
-  const t = QR_TYPES.find(x=>x.id===id);
+  q directlyrGen.type = id;
+  when const t = QR_TYPES.find(x=>x.id===id);
   $('qrFieldLabel').textContent = t.label;
   $('qrFieldHint').textContent = t.hint;
   $('qrInput').placeholder = t.placeholder;
   const defaults = {
-    url: 'https://example.com',
-    text: 'Hello from Bahrain!',
+    url: getWebsiteURL(),
+    text: 'Welcome to Yup Cafe & Juice Bar!',
     phone: '+973 1700 0000',
-    email: 'hello@example.bh',
-    wifi: 'WIFI:T:WPA;S:MyNetwork;P:MyPassword;;',
+    email: 'hello@yupcafe.bh',
+    wifi: 'WIFI:T:WPA;S:YupCafe;P:Welcome123;;',
     sms: '+973 1700 0000',
-    vcard: 'BEGIN:VCARD\nVERSION:3.0\nFN:Ahmed Ali\nTEL:+97317000000\nEMAIL:ahmed@example.bh\nEND:VCARD'
+    vcard: 'BEGIN:VCARD\nVERSION:3.0\nFN:Yup Cafe\nTEL:+97317000000\nEMAIL:hello@yupcafe.bh\nEND:VCARD'
   };
   $('qrInput').value = defaults[id] || '';
   qrGen.value = defaults[id] || '';
   renderQRGenControls();
   generateCustomQR();
+}
+
+function useWebsiteURL(){
+  const url = getWebsiteURL();
+  qrGen.type = 'url';
+  document.querySelectorAll('.qr-type').forEach(b => b.classList.toggle('active', b.dataset.type==='url'));
+  $('qrInput').value = url;
+  $('qrFieldLabel').textContent = 'Enter your URL';
+  $('qrFieldHint').textContent = 'This QR opens your live scanned.';
+  qrGen.value = url;
+  generateCustomQR();
+  toast('Live website URL loaded');
 }
 
 function updateSizeLabel(){
@@ -1579,9 +1714,11 @@ function applyStyle(dark, light){
   qrGen.dark = dark;
   qrGen.light = light;
   generateCustomQR();
-  // mark active preset
   document.querySelectorAll('#stylePresets .preset-btn').forEach(b => b.classList.remove('active'));
-  event.target.closest('.preset-btn')?.classList.add('active');
+  if(event && event.target){
+    const btn = event.target.closest('.preset-btn');
+    if(btn) btn.classList.add('active');
+  }
 }
 
 function generateCustomQR(){
@@ -1684,7 +1821,7 @@ function downloadCustomQR(){
   getCustomQRDataURL(url => {
     if(!url){ toast('Could not generate QR','err'); return; }
     const a = document.createElement('a');
-    a.download = 'qr-' + qrGen.type + '-' + Date.now() + '.png';
+    a.download = 'yup-cafe-qr-' + qrGen.type + '-' + Date.now() + '.png';
     a.href = url;
     a.click();
     toast('QR downloaded');
@@ -1712,9 +1849,9 @@ function shareCustomQR(){
   getCustomQRDataURL(url => {
     if(!url) return;
     fetch(url).then(r => r.blob()).then(blob => {
-      const file = new File([blob], 'qr-code.png', {type:'image/png'});
+      const file = new File([blob], 'yup-cafe-qr.png', {type:'image/png'});
       if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
-        navigator.share({ files:[file], title:'My QR Code', text:'Scan this QR — ' + qrGen.type }).catch(()=>{});
+        navigator.share({ files:[file], title:'Yup Cafe QR', text:'Scan to open Yup Cafe menu' }).catch(()=>{});
       } else {
         navigator.clipboard?.writeText(qrGen.value).then(()=>toast('Content copied'));
       }
@@ -2087,9 +2224,9 @@ function submitOrder(){
 
   const order = { id: orderId, name, address, phone, items: [...cart], subtotal, delivery, total, method: selectedPayMethod, placedAt: new Date().toISOString() };
   try{
-    const orders = JSON.parse(localStorage.getItem('gourmet_orders') || '[]');
+    const orders = JSON.parse(localStorage.getItem('yup_cafe_orders') || '[]');
     orders.push(order);
-    localStorage.setItem('gourmet_orders', JSON.stringify(orders));
+    localStorage.setItem('yup_cafe_orders', JSON.stringify(orders));
   }catch(e){}
 
   const p = data.payments || {};
@@ -2121,7 +2258,7 @@ function confirmOrder(order){
     ? `Order ${order.id} placed! Complete payment in the opened tab.`
     : `Order ${order.id} confirmed! Total ${formatPrice(order.total)}`;
   toast(msg);
-  setTimeout(()=>toast('The kitchen has received your order 🍳'), 1400);
+  setTimeout(()=>toast('Yup Cafe has received your order 🥤'), 1400);
 }
 
 /* ============================================================
@@ -2138,11 +2275,8 @@ function openCustomerView(){
 /* ============================================================
    SHARE / MENU QR
    ============================================================ */
-function buildMenuURL(){
-  return location.origin + location.pathname + '#menu';
-}
 function openShareLink(){
-  $('shareLinkInput').value = buildMenuURL();
+  $('shareLinkInput').value = getMenuURL();
   openModal('shareModal');
 }
 function copyShareLink(){
@@ -2170,9 +2304,9 @@ function downloadQR(){
     ctx.fillStyle = '#1c1917';
     ctx.font = 'bold 34px Inter, sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('SCAN TO ORDER', size/2, size-24);
+    ctx.fillText('YUP CAFE & JUICE BAR', size/2, size-24);
     const a = document.createElement('a');
-    a.download = 'menu-qr-' + (data.restaurant.name||'restaurant').toLowerCase().replace(/[^a-z0-9]+/g,'-') + '.png';
+    a.download = 'yup-cafe-menu-qr.png';
     a.href = out.toDataURL('image/png');
     a.click();
     toast('QR downloaded');
@@ -2217,7 +2351,7 @@ function resetDemo(){
   save();
   renderAll();
   updateCartCount();
-  toast('Reset to demo data');
+  toast('Reset to Yup Cafe demo data');
 }
 
 /* ============================================================
