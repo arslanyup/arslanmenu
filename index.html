@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gourmet Studio · Menu + Ordering + Payments + QR</title>
+<title>Gourmet Studio · Menu + Ordering + Payments</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
@@ -29,6 +29,7 @@ input,textarea,select{font-family:inherit;font-size:1rem;color:inherit}
 ::-webkit-scrollbar{width:8px;height:8px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--g300);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--g500)}
 
 /* ============ HEADER ============ */
 .app-header{background:var(--white);border-bottom:1px solid var(--g200);position:sticky;top:0;z-index:100}
@@ -44,7 +45,7 @@ input,textarea,select{font-family:inherit;font-size:1rem;color:inherit}
 
 .btn{padding:10px 17px;border-radius:10px;font-weight:600;font-size:.85rem;display:inline-flex;align-items:center;gap:8px;transition:.15s;white-space:nowrap}
 .btn-primary{background:var(--dark);color:#fff}
-.btn-primary:hover{background:#000}
+.btn-primary:hover{background:#000;transform:translateY(-1px)}
 .btn-amber{background:var(--amber);color:#fff;box-shadow:0 6px 14px -4px rgba(217,119,6,.5)}
 .btn-amber:hover{background:var(--amber-dark)}
 .btn-ghost{background:var(--g100);color:var(--g900)}
@@ -73,7 +74,9 @@ input,textarea,select{font-family:inherit;font-size:1rem;color:inherit}
 .card-head h3{font-size:1rem;font-weight:700;display:flex;align-items:center;gap:9px}
 .card-head h3 i{color:var(--amber)}
 
-/* ============ STATS ============ */
+/* ============ DASHBOARD ============ */
+.dash-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:20px;align-items:start}
+@media(max-width:1000px){.dash-grid{grid-template-columns:1fr}}
 .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
 @media(max-width:700px){.stat-row{grid-template-columns:1fr 1fr}}
 .stat{background:#fff;border:1px solid var(--g200);border-radius:var(--r-lg);padding:16px 18px}
@@ -82,9 +85,6 @@ input,textarea,select{font-family:inherit;font-size:1rem;color:inherit}
 .stat .sub{font-size:.75rem;color:var(--green);font-weight:600;margin-top:3px}
 .stat .sub.warn{color:var(--amber)}
 
-/* ============ DASHBOARD ============ */
-.dash-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:20px;align-items:start}
-@media(max-width:1000px){.dash-grid{grid-template-columns:1fr}}
 .qr-panel{display:flex;flex-direction:column;align-items:center;padding:26px 20px;text-align:center}
 .qr-frame{background:#fff;border:1px solid var(--g200);border-radius:var(--r);padding:14px;box-shadow:var(--sh);position:relative}
 .qr-frame::before,.qr-frame::after{content:'';position:absolute;width:24px;height:24px;border:3px solid var(--amber);border-radius:6px}
@@ -94,6 +94,7 @@ input,textarea,select{font-family:inherit;font-size:1rem;color:inherit}
 #qrcode img,#qrcode canvas{border-radius:6px;display:block}
 .qr-panel h3{font-size:1rem;font-weight:700;margin:16px 0 3px}
 .qr-panel p{font-size:.82rem;color:var(--g700);margin-bottom:14px}
+.qr-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
 
 .quick-list{display:flex;flex-direction:column}
 .quick-item{display:flex;align-items:center;gap:13px;padding:13px 20px;border-bottom:1px solid var(--g100);transition:.15s;cursor:pointer}
@@ -188,29 +189,6 @@ textarea.input{resize:vertical;min-height:70px}
 .payment-provider-head .pp-info{flex:1}
 .payment-provider-head .pp-info strong{display:block;font-size:.92rem}
 .payment-provider-head .pp-info small{font-size:.76rem;color:var(--g500)}
-
-/* ============ QR GENERATOR ============ */
-.qrgen-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
-@media(max-width:980px){.qrgen-grid{grid-template-columns:1fr}}
-.qrgen-types{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
-.qr-type{padding:9px 14px;border-radius:10px;background:var(--g100);font-size:.82rem;font-weight:600;color:var(--g700);display:flex;align-items:center;gap:7px;transition:.15s;border:1.5px solid transparent}
-.qr-type:hover{background:var(--g200)}
-.qr-type.active{background:var(--amber-light);border-color:var(--amber);color:var(--amber-dark)}
-.qr-preview-stage{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 22px;min-height:460px}
-#qrgenPreview{display:flex;align-items:center;justify-content:center;padding:18px;border-radius:var(--r);background:#fff;border:1px solid var(--g200);box-shadow:var(--sh);position:relative}
-#qrgenPreview canvas,#qrgenPreview img{border-radius:6px;display:block}
-.qr-meta{margin-top:16px;text-align:center;font-size:.82rem;color:var(--g700);max-width:100%;word-break:break-all}
-.qr-meta strong{color:var(--dark);display:block;margin-bottom:2px}
-.slider{width:100%;accent-color:var(--amber)}
-.size-value{font-size:.85rem;font-weight:700;color:var(--amber-dark)}
-.color-input{width:100%;height:44px;border:1.5px solid var(--g200);border-radius:10px;cursor:pointer;padding:3px}
-.preset-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.preset-btn{padding:10px;border-radius:10px;background:var(--g100);font-size:.76rem;font-weight:700;color:var(--g700);transition:.15s;border:1.5px solid transparent;display:flex;align-items:center;gap:6px;justify-content:center}
-.preset-btn:hover{background:var(--g200)}
-.preset-btn.active{background:var(--dark);color:#fff}
-.preset-swatch{width:14px;height:14px;border-radius:4px;flex-shrink:0}
-.qr-actions-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
-.qr-actions-row .btn{flex:1;justify-content:center;min-width:120px}
 
 /* ============ PHONE PREVIEW ============ */
 .preview-stage{display:flex;justify-content:center;padding:20px 0}
@@ -313,15 +291,6 @@ textarea.input{resize:vertical;min-height:70px}
 .modal-body{padding:20px 22px;overflow-y:auto;flex:1}
 .modal-foot{padding:15px 22px;border-top:1px solid var(--g200);display:flex;gap:10px;justify-content:flex-end;flex-shrink:0;background:var(--g100);border-radius:0 0 var(--r-lg) var(--r-lg)}
 
-.preview-thumb{display:flex;align-items:center;gap:11px;padding:11px;background:var(--g100);border-radius:12px;margin-top:10px}
-.preview-thumb .pt-img{width:56px;height:56px;border-radius:10px;object-fit:cover;background:var(--g200);flex-shrink:0}
-.preview-thumb .pt-icon{width:56px;height:56px;border-radius:10px;background:#fef2f2;color:var(--red);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
-.preview-thumb .pt-info{flex:1;min-width:0}
-.preview-thumb .pt-info strong{font-size:.82rem;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.preview-thumb .pt-info small{font-size:.72rem;color:var(--g500)}
-.preview-thumb .pt-del{color:var(--red);font-size:.85rem;padding:6px}
-.attach-list{display:flex;flex-direction:column;gap:8px;margin-top:10px}
-
 /* ============ TOAST ============ */
 .toasts{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);z-index:400;display:flex;flex-direction:column;gap:9px;align-items:center;pointer-events:none}
 .toast{background:var(--dark);color:#fff;padding:12px 20px;border-radius:var(--r-full);font-size:.85rem;font-weight:600;display:flex;align-items:center;gap:9px;box-shadow:var(--sh-lg);animation:tIn .3s;white-space:nowrap;max-width:90vw}
@@ -345,7 +314,6 @@ body.customer-mode{background:#fafaf9}
   .phone{width:100%;border-radius:32px;padding:8px}
   .phone-screen{height:680px;border-radius:26px}
   .stat-row{grid-template-columns:1fr 1fr}
-  .preset-grid{grid-template-columns:1fr 1fr}
 }
 </style>
 </head>
@@ -362,7 +330,6 @@ body.customer-mode{background:#fafaf9}
       <button class="tab active" data-view="dashboard"><i class="fas fa-gauge-high"></i> Dashboard</button>
       <button class="tab" data-view="editor"><i class="fas fa-pen-to-square"></i> Menu Editor</button>
       <button class="tab" data-view="payments"><i class="fas fa-credit-card"></i> Payments</button>
-      <button class="tab" data-view="qrgen"><i class="fas fa-qrcode"></i> QR Generator</button>
       <button class="tab" data-view="design"><i class="fas fa-palette"></i> Design</button>
       <button class="tab" data-view="preview"><i class="fas fa-mobile-screen"></i> Preview & Order</button>
     </nav>
@@ -380,7 +347,7 @@ body.customer-mode{background:#fafaf9}
     <div class="page-head">
       <div>
         <h1>Welcome back 👋</h1>
-        <p>Menu + Ordering + Payments + Custom QR · Currency: <strong>Bahraini Dinar (BD)</strong></p>
+        <p>Menu + Ordering + Payments · Currency: <strong>Bahraini Dinar (BD)</strong></p>
       </div>
     </div>
 
@@ -416,11 +383,6 @@ body.customer-mode{background:#fafaf9}
             <div class="qi-info"><strong>Set up payments</strong><small>Connect Stripe or PayPal to get paid</small></div>
             <i class="fas fa-chevron-right"></i>
           </div>
-          <div class="quick-item" onclick="switchView('qrgen')">
-            <div class="qi-icon"><i class="fas fa-qrcode"></i></div>
-            <div class="qi-info"><strong>Create custom QR code</strong><small>For any URL, WiFi, phone, or text</small></div>
-            <i class="fas fa-chevron-right"></i>
-          </div>
           <div class="quick-item" onclick="switchView('editor')">
             <div class="qi-icon"><i class="fas fa-plus"></i></div>
             <div class="qi-info"><strong>Add a new dish</strong><small>With photos, PDFs, and portions</small></div>
@@ -432,8 +394,8 @@ body.customer-mode{background:#fafaf9}
             <i class="fas fa-chevron-right"></i>
           </div>
           <div class="quick-item" onclick="downloadQR()">
-            <div class="qi-icon"><i class="fas fa-download"></i></div>
-            <div class="qi-info"><strong>Download menu QR</strong><small>High-res PNG for tables</small></div>
+            <div class="qi-icon"><i class="fas fa-qrcode"></i></div>
+            <div class="qi-info"><strong>Download QR code</strong><small>High-res PNG for tables</small></div>
             <i class="fas fa-chevron-right"></i>
           </div>
         </div>
@@ -443,7 +405,7 @@ body.customer-mode{background:#fafaf9}
         <div class="qr-frame"><div id="qrcode"></div></div>
         <h3>Scan to view & order</h3>
         <p>Guests scan → browse → add to cart → pay</p>
-        <div class="qr-actions" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+        <div class="qr-actions">
           <button class="btn btn-primary btn-sm" onclick="downloadQR()"><i class="fas fa-download"></i> Download</button>
           <button class="btn btn-ghost btn-sm" onclick="openCustomerView()"><i class="fas fa-eye"></i> Open live</button>
         </div>
@@ -489,10 +451,10 @@ body.customer-mode{background:#fafaf9}
     <div class="card card-pad" style="margin-bottom:20px">
       <h3 style="font-size:1rem;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:9px"><i class="fas fa-circle-info" style="color:var(--blue)"></i> How it works</h3>
       <p style="font-size:.88rem;color:var(--g700);line-height:1.7;margin-bottom:12px">
-        When a customer places an order, they'll be redirected to a secure payment page (Stripe or PayPal). After they pay, they come back and see their order is confirmed.
+        When a customer places an order on your menu, they'll be redirected to a secure payment page (Stripe or PayPal). After they pay, they come back to your menu and see their order is confirmed.
       </p>
       <p style="font-size:.85rem;color:var(--g700);line-height:1.7">
-        <strong>You need:</strong> A free Stripe or PayPal Business account. We recommend starting with <strong>Stripe Payment Links</strong>.
+        <strong>You need:</strong> A free Stripe or PayPal Business account. We recommend starting with <strong>Stripe Payment Links</strong> — no coding, just paste a link.
       </p>
     </div>
 
@@ -513,7 +475,14 @@ body.customer-mode{background:#fafaf9}
         <div class="form-row">
           <label>Your Stripe Payment Link</label>
           <input class="input" id="stripeLink" placeholder="https://buy.stripe.com/xxxxx" oninput="updatePayment('stripeLink', this.value)">
-          <div class="hint">Create at <strong>dashboard.stripe.com</strong> → Product catalog → Add product → Create payment link.</div>
+          <div class="hint">
+            Create one at <strong>dashboard.stripe.com</strong> → Product catalog → Add product → Create payment link. Copy the URL here.
+          </div>
+        </div>
+        <div class="form-row">
+          <label>Or paste a Buy Button code (optional)</label>
+          <textarea class="input" id="stripeButton" rows="3" placeholder="<stripe-buy-button ...></stripe-buy-button>" oninput="updatePayment('stripeButton', this.value)"></textarea>
+          <div class="hint">Advanced: allows dynamic amount from the cart total.</div>
         </div>
       </div>
     </div>
@@ -535,7 +504,7 @@ body.customer-mode{background:#fafaf9}
         <div class="form-row">
           <label>Your PayPal.me link or Business email</label>
           <input class="input" id="paypalLink" placeholder="https://paypal.me/yourname or business@example.com" oninput="updatePayment('paypalLink', this.value)">
-          <div class="hint">Create at <strong>paypal.me</strong> — takes 1 minute.</div>
+          <div class="hint">Create a PayPal.me link at <strong>paypal.me</strong> — it takes 1 minute.</div>
         </div>
       </div>
     </div>
@@ -555,110 +524,11 @@ body.customer-mode{background:#fafaf9}
       </div>
     </div>
 
+    <!-- Test -->
     <div class="card card-pad" style="margin-top:16px">
       <h3 style="font-size:1rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:9px"><i class="fas fa-flask" style="color:var(--purple)"></i> Test your payment</h3>
-      <p style="font-size:.86rem;color:var(--g700);margin-bottom:14px">Add something to the cart in Preview, then place a test order.</p>
+      <p style="font-size:.86rem;color:var(--g700);margin-bottom:14px">Add something to the cart in Preview, then place a test order to see your payment flow in action.</p>
       <button class="btn btn-amber" onclick="switchView('preview')"><i class="fas fa-play"></i> Go to Preview & Order</button>
-    </div>
-  </section>
-
-  <!-- ===================== QR GENERATOR ===================== -->
-  <section class="view" id="view-qrgen">
-    <div class="page-head">
-      <div>
-        <h1>Custom QR Code Generator</h1>
-        <p>Create QR codes for URLs, WiFi, phone numbers, text, and more</p>
-      </div>
-    </div>
-
-    <div class="qrgen-grid">
-      <!-- Controls -->
-      <div class="card card-pad">
-        <h3 style="font-size:1rem;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:9px"><i class="fas fa-sliders" style="color:var(--amber)"></i> Content</h3>
-
-        <div class="qrgen-types" id="qrTypes"></div>
-
-        <div class="form-row">
-          <label id="qrFieldLabel">Enter your URL</label>
-          <textarea class="input" id="qrInput" rows="3" placeholder="https://example.com" oninput="generateCustomQR()"></textarea>
-          <div class="hint" id="qrFieldHint">The QR code will open this URL when scanned.</div>
-        </div>
-
-        <div class="form-row">
-          <label>Size <span class="size-value" id="sizeVal">400 px</span></label>
-          <input type="range" class="slider" id="qrSize" min="200" max="1000" step="50" value="400" oninput="updateSizeLabel();generateCustomQR()">
-        </div>
-
-        <div class="form-2col">
-          <div class="form-row">
-            <label>Foreground</label>
-            <input type="color" class="color-input" id="qrDark" value="#1c1917" oninput="generateCustomQR()">
-          </div>
-          <div class="form-row">
-            <label>Background</label>
-            <input type="color" class="color-input" id="qrLight" value="#ffffff" oninput="generateCustomQR()">
-          </div>
-        </div>
-
-        <div class="form-row">
-          <label>Error correction (higher = more robust)</label>
-          <div class="preset-grid" id="ecPresets">
-            <button type="button" class="preset-btn" data-ec="L" onclick="setEC('L')">Low (L)</button>
-            <button type="button" class="preset-btn active" data-ec="M" onclick="setEC('M')">Medium (M)</button>
-            <button type="button" class="preset-btn" data-ec="Q" onclick="setEC('Q')">Quartile (Q)</button>
-            <button type="button" class="preset-btn" data-ec="H" onclick="setEC('H')">High (H)</button>
-          </div>
-        </div>
-
-        <div class="form-row" style="margin-bottom:0">
-          <label>Style presets</label>
-          <div class="preset-grid" id="stylePresets">
-            <button type="button" class="preset-btn" onclick="applyStyle('#1c1917','#ffffff')">
-              <span class="preset-swatch" style="background:#1c1917"></span> Classic
-            </button>
-            <button type="button" class="preset-btn" onclick="applyStyle('#d97706','#fffbeb')">
-              <span class="preset-swatch" style="background:#d97706"></span> Amber
-            </button>
-            <button type="button" class="preset-btn" onclick="applyStyle('#16a34a','#f0fdf4')">
-              <span class="preset-swatch" style="background:#16a34a"></span> Green
-            </button>
-            <button type="button" class="preset-btn" onclick="applyStyle('#2563eb','#eff6ff')">
-              <span class="preset-swatch" style="background:#2563eb"></span> Blue
-            </button>
-            <button type="button" class="preset-btn" onclick="applyStyle('#dc2626','#fef2f2')">
-              <span class="preset-swatch" style="background:#dc2626"></span> Red
-            </button>
-            <button type="button" class="preset-btn" onclick="applyStyle('#7c3aed','#f5f3ff')">
-              <span class="preset-swatch" style="background:#7c3aed"></span> Purple
-            </button>
-            <button type="button" class="preset-btn" onclick="applyStyle('#0f172a','#f1f5f9')">
-              <span class="preset-swatch" style="background:#0f172a"></span> Slate
-            </button>
-            <button type="button" class="preset-btn" onclick="applyStyle('#0891b2','#ecfeff')">
-              <span class="preset-swatch" style="background:#0891b2"></span> Ocean
-            </button>
-            <button type="button" class="preset-btn" onclick="applyStyle('#ea580c','#fff7ed')">
-              <span class="preset-swatch" style="background:#ea580c"></span> Sunset
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Preview -->
-      <div class="card">
-        <div class="qr-preview-stage">
-          <div id="qrgenPreview"></div>
-          <div class="qr-meta" id="qrgenMeta">
-            <strong>Preview</strong>
-            Your QR code will appear here
-          </div>
-          <div class="qr-actions-row">
-            <button class="btn btn-primary" onclick="downloadCustomQR()"><i class="fas fa-download"></i> Download PNG</button>
-            <button class="btn btn-ghost" onclick="copyCustomQR()"><i class="fas fa-copy"></i> Copy image</button>
-            <button class="btn btn-outline" onclick="shareCustomQR()"><i class="fas fa-share-nodes"></i> Share</button>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -710,6 +580,7 @@ body.customer-mode{background:#fafaf9}
         <div class="form-row">
           <label>Delivery fee (BD)</label>
           <input class="input" id="fDeliveryFee" type="number" step="0.001" min="0" oninput="updateRestaurant('deliveryFee', parseFloat(this.value)||0)">
+          <div class="hint">Added to every order total</div>
         </div>
         <div class="form-row" style="margin-bottom:0">
           <label>Footer note</label>
@@ -765,7 +636,7 @@ body.customer-mode{background:#fafaf9}
     <div class="page-head">
       <div>
         <h1>Customer Preview & Order</h1>
-        <p>Tap items → add to cart → place an order to test payments</p>
+        <p>Tap items to add to cart → then place an order to test payments</p>
       </div>
       <button class="btn btn-ghost" onclick="openCustomerView()"><i class="fas fa-mobile-screen"></i> Full-screen</button>
     </div>
@@ -943,7 +814,7 @@ body.customer-mode{background:#fafaf9}
 /* ============================================================
    CONSTANTS
    ============================================================ */
-const STORAGE_KEY = 'gourmet_studio_qr_v1';
+const STORAGE_KEY = 'gourmet_studio_pay_v1';
 const COLORS = ['#d97706','#dc2626','#16a34a','#2563eb','#7c3aed','#db2777','#0891b2','#1c1917'];
 const LOGO_EMOJIS = ['🍽️','🍕','🍔','🍣','🥗','🍜','🌮','🥘','🍰','☕','🍷','🥩','🍤','🥙','🍱','🧆','🇧🇭','🕌'];
 const ITEM_EMOJIS = ['🍽️','🍕','🍔','🍟','🌮','🌯','🥙','🍣','🍜','🍝','🍛','🥘','🍲','🥗','🥩','🍗','🍤','🐟','🥚','🧀','🥖','🍞','🥐','🥞','🧇','🍩','🍰','🎂','🍦','🍫','🍬','🍭','🍮','☕','🍵','🧋','🥤','🍺','🍷','🍹','🥛','🧃','🍎','🍌','🥑','🍓','🫖','🍯'];
@@ -953,16 +824,6 @@ const TAGS = [
   { id:'popular', label:'Popular', cls:'popular' },
   { id:'new', label:'New', cls:'new' },
   { id:'chef', label:"Chef's pick", cls:'chef' }
-];
-
-const QR_TYPES = [
-  { id:'url',   name:'URL',     icon:'fa-link',        label:'Enter your URL',      hint:'The QR code will open this URL when scanned.', placeholder:'https://example.com' },
-  { id:'text',  name:'Text',    icon:'fa-align-left',  label:'Enter your text',     hint:'Plain text is shown when scanned.',           placeholder:'Hello from Bahrain!' },
-  { id:'phone', name:'Phone',   icon:'fa-phone',       label:'Phone number',        hint:'Scanning will dial this number.',             placeholder:'+973 1700 0000' },
-  { id:'email', name:'Email',   icon:'fa-envelope',    label:'Email address',       hint:'Scanning will open a new email.',             placeholder:'hello@example.bh' },
-  { id:'wifi',  name:'WiFi',    icon:'fa-wifi',        label:'WiFi network',        hint:'Format: WIFI:T:WPA;S:NetworkName;P:Password;;', placeholder:'WIFI:T:WPA;S:MyNetwork;P:MyPassword;;' },
-  { id:'sms',   name:'SMS',     icon:'fa-comment-sms', label:'SMS number',          hint:'Scanning will open the SMS app.',             placeholder:'+973 1700 0000' },
-  { id:'vcard', name:'Contact', icon:'fa-address-card',label:'Contact info (vCard)',hint:'Format: BEGIN:VCARD...END:VCARD', placeholder:'BEGIN:VCARD\nVERSION:3.0\nFN:Ahmed Ali\nTEL:+97317000000\nEND:VCARD' }
 ];
 
 /* ============================================================
@@ -988,8 +849,11 @@ function defaultData(){
       deliveryFee:0.500
     },
     payments:{
-      stripeEnabled:false, stripeLink:'',
-      paypalEnabled:false, paypalLink:'',
+      stripeEnabled:false,
+      stripeLink:'',
+      stripeButton:'',
+      paypalEnabled:false,
+      paypalLink:'',
       cashEnabled:true
     },
     categories:[
@@ -1039,16 +903,6 @@ let itemPortions = [];
 let cart = [];
 let currentPortionSelections = {};
 let selectedPayMethod = 'cash';
-
-/* QR generator state */
-let qrGen = {
-  type:'url',
-  value:'https://example.com',
-  size:400,
-  dark:'#1c1917',
-  light:'#ffffff',
-  ec:'M'
-};
 
 /* ============================================================
    PERSISTENCE
@@ -1121,7 +975,6 @@ function switchView(name){
   document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.view===name));
   if(name==='preview') renderPreview();
   if(name==='payments') renderPayments();
-  if(name==='qrgen'){ renderQRGenControls(); generateCustomQR(); }
   window.scrollTo({top:0,behavior:'smooth'});
 }
 document.querySelectorAll('.tab').forEach(t => {
@@ -1139,6 +992,7 @@ function renderDashboard(){
   $('statImages').textContent = withImages;
   $('statOrders').textContent = cart.reduce((s,c)=>s+c.qty,0);
 
+  // payment status
   const p = data.payments || {};
   const enabled = [];
   if(p.stripeEnabled && p.stripeLink) enabled.push('Stripe');
@@ -1502,6 +1356,7 @@ function renderPayments(){
   const p = data.payments || {};
   $('stripeEnabled').checked = p.stripeEnabled || false;
   $('stripeLink').value = p.stripeLink || '';
+  $('stripeButton').value = p.stripeButton || '';
   $('stripeFields').style.display = p.stripeEnabled ? 'block' : 'none';
   $('cardStripe').classList.toggle('active', p.stripeEnabled);
 
@@ -1513,6 +1368,7 @@ function renderPayments(){
   $('cashEnabled').checked = p.cashEnabled !== false;
   $('cardCash').classList.toggle('active', p.cashEnabled !== false);
 }
+
 function togglePayment(provider, enabled){
   if(!data.payments) data.payments = {};
   data.payments[provider + 'Enabled'] = enabled;
@@ -1527,199 +1383,6 @@ function updatePayment(key, value){
   data.payments[key] = value;
   save();
   renderDashboard();
-}
-
-/* ============================================================
-   QR GENERATOR
-   ============================================================ */
-function renderQRGenControls(){
-  const typesEl = $('qrTypes');
-  typesEl.innerHTML = QR_TYPES.map(t => `
-    <button type="button" class="qr-type ${qrGen.type===t.id?'active':''}" data-type="${t.id}" onclick="setQRType('${t.id}')">
-      <i class="fas ${t.icon}"></i> ${t.name}
-    </button>
-  `).join('');
-}
-
-function setQRType(id){
-  qrGen.type = id;
-  const t = QR_TYPES.find(x=>x.id===id);
-  $('qrFieldLabel').textContent = t.label;
-  $('qrFieldHint').textContent = t.hint;
-  $('qrInput').placeholder = t.placeholder;
-  const defaults = {
-    url: 'https://example.com',
-    text: 'Hello from Bahrain!',
-    phone: '+973 1700 0000',
-    email: 'hello@example.bh',
-    wifi: 'WIFI:T:WPA;S:MyNetwork;P:MyPassword;;',
-    sms: '+973 1700 0000',
-    vcard: 'BEGIN:VCARD\nVERSION:3.0\nFN:Ahmed Ali\nTEL:+97317000000\nEMAIL:ahmed@example.bh\nEND:VCARD'
-  };
-  $('qrInput').value = defaults[id] || '';
-  qrGen.value = defaults[id] || '';
-  renderQRGenControls();
-  generateCustomQR();
-}
-
-function updateSizeLabel(){
-  const v = $('qrSize').value;
-  $('sizeVal').textContent = v + ' px';
-}
-
-function setEC(level){
-  qrGen.ec = level;
-  document.querySelectorAll('#ecPresets .preset-btn').forEach(b => b.classList.toggle('active', b.dataset.ec===level));
-  generateCustomQR();
-}
-
-function applyStyle(dark, light){
-  $('qrDark').value = dark;
-  $('qrLight').value = light;
-  qrGen.dark = dark;
-  qrGen.light = light;
-  generateCustomQR();
-  // mark active preset
-  document.querySelectorAll('#stylePresets .preset-btn').forEach(b => b.classList.remove('active'));
-  event.target.closest('.preset-btn')?.classList.add('active');
-}
-
-function generateCustomQR(){
-  const input = $('qrInput');
-  const value = input.value.trim();
-  const size = parseInt($('qrSize').value, 10);
-  const dark = $('qrDark').value;
-  const light = $('qrLight').value;
-
-  qrGen.value = value;
-  qrGen.size = size;
-  qrGen.dark = dark;
-  qrGen.light = light;
-
-  const preview = $('qrgenPreview');
-  const meta = $('qrgenMeta');
-  preview.innerHTML = '';
-
-  if(!value){
-    preview.innerHTML = '<div style="padding:40px;color:#a8a29e;font-size:.85rem;text-align:center">Enter content to generate QR</div>';
-    meta.innerHTML = '<strong>Preview</strong>Waiting for input';
-    return;
-  }
-
-  const ecMap = {
-    L: QRCode.CorrectLevel.L, M: QRCode.CorrectLevel.M,
-    Q: QRCode.CorrectLevel.Q, H: QRCode.CorrectLevel.H
-  };
-
-  const displaySize = Math.min(size, 260);
-
-  try{
-    new QRCode(preview, {
-      text: value,
-      width: displaySize, height: displaySize,
-      colorDark: dark, colorLight: light,
-      correctLevel: ecMap[qrGen.ec] || QRCode.CorrectLevel.M
-    });
-  }catch(e){
-    preview.innerHTML = '<div style="padding:40px;color:#dc2626;font-size:.85rem;text-align:center">Content too long for this QR size</div>';
-    return;
-  }
-
-  const typeName = QR_TYPES.find(t=>t.id===qrGen.type)?.name || 'QR';
-  const previewMsg = value.length > 60 ? value.slice(0,60) + '…' : value;
-  meta.innerHTML = `<strong>${typeName} · ${size}×${size}px · EC: ${qrGen.ec}</strong>${escapeHtml(previewMsg)}`;
-}
-
-function getCustomQRDataURL(callback){
-  const size = qrGen.size;
-  const dark = qrGen.dark;
-  const light = qrGen.light;
-  const value = qrGen.value;
-  if(!value){ callback(null); return; }
-
-  const temp = document.createElement('div');
-  temp.style.position = 'absolute';
-  temp.style.left = '-99999px';
-  document.body.appendChild(temp);
-
-  const ecMap = {
-    L: QRCode.CorrectLevel.L, M: QRCode.CorrectLevel.M,
-    Q: QRCode.CorrectLevel.Q, H: QRCode.CorrectLevel.H
-  };
-
-  try{
-    new QRCode(temp, {
-      text: value,
-      width: size, height: size,
-      colorDark: dark, colorLight: light,
-      correctLevel: ecMap[qrGen.ec] || QRCode.CorrectLevel.M
-    });
-  }catch(e){
-    document.body.removeChild(temp);
-    callback(null);
-    return;
-  }
-
-  setTimeout(() => {
-    const canvas = temp.querySelector('canvas');
-    const img = temp.querySelector('img');
-    let url = null;
-    if(canvas) url = canvas.toDataURL('image/png');
-    else if(img){
-      const c = document.createElement('canvas');
-      c.width = size; c.height = size;
-      const ctx = c.getContext('2d');
-      ctx.fillStyle = light;
-      ctx.fillRect(0,0,size,size);
-      ctx.drawImage(img, 0, 0, size, size);
-      url = c.toDataURL('image/png');
-    }
-    document.body.removeChild(temp);
-    callback(url);
-  }, 100);
-}
-
-function downloadCustomQR(){
-  if(!qrGen.value){ toast('Enter content first','err'); return; }
-  getCustomQRDataURL(url => {
-    if(!url){ toast('Could not generate QR','err'); return; }
-    const a = document.createElement('a');
-    a.download = 'qr-' + qrGen.type + '-' + Date.now() + '.png';
-    a.href = url;
-    a.click();
-    toast('QR downloaded');
-  });
-}
-
-function copyCustomQR(){
-  if(!qrGen.value){ toast('Enter content first','err'); return; }
-  getCustomQRDataURL(url => {
-    if(!url){ toast('Could not generate QR','err'); return; }
-    fetch(url).then(r => r.blob()).then(blob => {
-      if(navigator.clipboard && window.ClipboardItem){
-        navigator.clipboard.write([new ClipboardItem({'image/png': blob})])
-          .then(()=>toast('QR copied'))
-          .catch(()=>toast('Copy failed — use download','err'));
-      } else {
-        toast('Copy not supported — use download','err');
-      }
-    });
-  });
-}
-
-function shareCustomQR(){
-  if(!qrGen.value){ toast('Enter content first','err'); return; }
-  getCustomQRDataURL(url => {
-    if(!url) return;
-    fetch(url).then(r => r.blob()).then(blob => {
-      const file = new File([blob], 'qr-code.png', {type:'image/png'});
-      if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
-        navigator.share({ files:[file], title:'My QR Code', text:'Scan this QR — ' + qrGen.type }).catch(()=>{});
-      } else {
-        navigator.clipboard?.writeText(qrGen.value).then(()=>toast('Content copied'));
-      }
-    });
-  });
 }
 
 /* ============================================================
@@ -1927,6 +1590,7 @@ function selectPortion(itemId, portionId, event){
   currentPortionSelections[itemId] = portionId;
   refreshMenuViews();
 }
+
 function addToCart(itemId, portionId, event){
   if(event) event.stopPropagation();
   const found = findItem(itemId);
@@ -1948,6 +1612,7 @@ function addToCart(itemId, portionId, event){
   refreshMenuViews();
   toast(`${item.name} added`);
 }
+
 function updateCartQty(itemId, portionId, delta, event){
   if(event) event.stopPropagation();
   const idx = cart.findIndex(c => c.itemId===itemId && (c.portionId||'')===(portionId||''));
@@ -1958,10 +1623,12 @@ function updateCartQty(itemId, portionId, delta, event){
   refreshMenuViews();
   if($('cartDrawer').classList.contains('show')) renderCart();
 }
+
 function updateCartCount(){
   const count = cart.reduce((s,c)=>s+c.qty, 0);
   if($('statOrders')) $('statOrders').textContent = count;
 }
+
 function refreshMenuViews(){
   if($('view-preview').classList.contains('active')){
     const scroll = $('previewScroll');
@@ -1991,6 +1658,7 @@ function closeCart(){
   $('cartDrawer').classList.remove('show');
   $('cartOverlay').classList.remove('show');
 }
+
 function renderCart(){
   const body = $('cartBody');
   const foot = $('cartFoot');
@@ -2028,6 +1696,7 @@ function renderCart(){
     <button class="btn btn-amber btn-block" style="margin-top:12px" onclick="openCheckout()"><i class="fas fa-lock"></i> Checkout · ${formatPrice(total)}</button>
   `;
 }
+
 function cartQty(i, delta){
   cart[i].qty += delta;
   if(cart[i].qty <= 0) cart.splice(i,1);
@@ -2037,7 +1706,7 @@ function cartQty(i, delta){
 }
 
 /* ============================================================
-   CHECKOUT
+   CHECKOUT + PAYMENT
    ============================================================ */
 function openCheckout(){
   if(!cart.length){ toast('Your cart is empty','err'); return; }
@@ -2054,7 +1723,7 @@ function renderCheckoutPayMethods(){
   if(p.cashEnabled !== false) methods.push({ id:'cash', name:'Cash on delivery', sub:'Pay the driver in BD', icon:'fa-money-bill-wave', cls:'cash' });
 
   if(!methods.length){
-    $('coPayMethods').innerHTML = `<div class="empty-box" style="padding:20px"><i class="fas fa-circle-exclamation"></i><p style="font-size:.85rem">No payment methods enabled.</p></div>`;
+    $('coPayMethods').innerHTML = `<div class="empty-box" style="padding:20px"><i class="fas fa-circle-exclamation"></i><p style="font-size:.85rem">No payment methods enabled. Enable one in the Payments tab.</p></div>`;
     return;
   }
   if(!methods.find(m => m.id === selectedPayMethod)) selectedPayMethod = methods[0].id;
@@ -2067,8 +1736,14 @@ function renderCheckoutPayMethods(){
     </label>
   `).join('');
 }
+
 function selectPayMethod(id){
   selectedPayMethod = id;
+  document.querySelectorAll('.pay-method').forEach(el => el.classList.remove('selected'));
+  document.querySelectorAll('.pay-method').forEach(el => {
+    const input = el.querySelector('input');
+    if(input && input.value === id) el.classList.add('selected');
+  });
   renderCheckoutPayMethods();
 }
 
@@ -2076,6 +1751,7 @@ function submitOrder(){
   const name = $('coName').value.trim();
   const address = $('coAddress').value.trim();
   const phone = $('coPhone').value.trim();
+
   if(!name){ toast('Please enter your name','err'); return; }
   if(!address){ toast('Please enter your address','err'); return; }
   if(!phone){ toast('Please enter your phone','err'); return; }
@@ -2085,30 +1761,51 @@ function submitOrder(){
   const total = subtotal + delivery;
   const orderId = 'ORD-' + Math.floor(10000 + Math.random()*90000);
 
-  const order = { id: orderId, name, address, phone, items: [...cart], subtotal, delivery, total, method: selectedPayMethod, placedAt: new Date().toISOString() };
+  const order = {
+    id: orderId,
+    name, address, phone,
+    items: [...cart],
+    subtotal, delivery, total,
+    method: selectedPayMethod,
+    placedAt: new Date().toISOString()
+  };
+
+  // Save order locally (so it's not lost)
   try{
     const orders = JSON.parse(localStorage.getItem('gourmet_orders') || '[]');
     orders.push(order);
     localStorage.setItem('gourmet_orders', JSON.stringify(orders));
   }catch(e){}
 
+  // Handle payment redirect
   const p = data.payments || {};
   if(selectedPayMethod === 'stripe' && p.stripeLink){
-    const url = p.stripeLink.includes('?') ? `${p.stripeLink}&client_reference_id=${orderId}` : `${p.stripeLink}?client_reference_id=${orderId}`;
-    window.open(url, '_blank');
-    confirmOrder({...order, pendingPayment:true});
+    openPaymentRedirect(p.stripeLink, total, orderId);
   } else if(selectedPayMethod === 'paypal' && p.paypalLink){
-    let url = p.paypalLink;
-    if(p.paypalLink.includes('paypal.me')){
-      url = p.paypalLink.endsWith('/') ? `${p.paypalLink}${total.toFixed(2)}` : `${p.paypalLink}/${total.toFixed(2)}`;
-    } else if(p.paypalLink.includes('@')){
-      url = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${encodeURIComponent(p.paypalLink)}&amount=${total.toFixed(2)}&item_name=Order+${orderId}`;
-    }
-    window.open(url, '_blank');
-    confirmOrder({...order, pendingPayment:true});
+    openPaypalRedirect(p.paypalLink, total, orderId);
   } else {
+    // Cash or no payment link — just confirm
     confirmOrder(order);
   }
+}
+
+function openPaymentRedirect(link, amount, orderId){
+  // Stripe Payment Link — open in new tab, mark order as pending payment
+  const url = link.includes('?') ? `${link}&client_reference_id=${orderId}` : `${link}?client_reference_id=${orderId}`;
+  window.open(url, '_blank');
+  confirmOrder({ id: orderId, method: 'stripe', total: amount, name: $('coName').value, address: $('coAddress').value, phone: $('coPhone').value, pendingPayment: true });
+}
+
+function openPaypalRedirect(link, amount, orderId){
+  // PayPal.me link
+  let url = link;
+  if(link.includes('paypal.me')){
+    url = link.endsWith('/') ? `${link}${amount.toFixed(2)}` : `${link}/${amount.toFixed(2)}`;
+  } else if(link.includes('@')){
+    url = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${encodeURIComponent(link)}&amount=${amount.toFixed(2)}&item_name=Order+${orderId}`;
+  }
+  window.open(url, '_blank');
+  confirmOrder({ id: orderId, method: 'paypal', total: amount, name: $('coName').value, address: $('coAddress').value, phone: $('coPhone').value, pendingPayment: true });
 }
 
 function confirmOrder(order){
@@ -2117,6 +1814,7 @@ function confirmOrder(order){
   currentPortionSelections = {};
   updateCartCount();
   refreshMenuViews();
+
   const msg = order.pendingPayment
     ? `Order ${order.id} placed! Complete payment in the opened tab.`
     : `Order ${order.id} confirmed! Total ${formatPrice(order.total)}`;
@@ -2136,7 +1834,7 @@ function openCustomerView(){
 }
 
 /* ============================================================
-   SHARE / MENU QR
+   SHARE / QR
    ============================================================ */
 function buildMenuURL(){
   return location.origin + location.pathname + '#menu';
@@ -2230,7 +1928,6 @@ function renderAll(){
   renderDesign();
   renderPayments();
   if($('view-preview').classList.contains('active')) renderPreview();
-  if($('view-qrgen').classList.contains('active')){ renderQRGenControls(); generateCustomQR(); }
 }
 
 /* ============================================================
@@ -2239,8 +1936,6 @@ function renderAll(){
 (function init(){
   applyAccent();
   renderAll();
-  renderQRGenControls();
-  updateSizeLabel();
   updateCartCount();
   if(location.hash === '#menu'){
     setTimeout(openCustomerView, 200);
